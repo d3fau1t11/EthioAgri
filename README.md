@@ -1,205 +1,80 @@
-# EthioAgri 🌾
+# EthioAgri
 
-A modern web platform connecting Ethiopian farmers and customers, bridging the gap between agricultural producers and consumers. Fresh produce, fair prices, and sustainable agriculture for a better Ethiopia.
+A working demo marketplace connecting Ethiopian farmers and customers.
 
-## Overview
+**Live app:** https://d3fau1t11.github.io/EthioAgri/
 
-EthioAgri is a full-stack Next.js application designed to:
-- **Empower Farmers**: Showcase and sell their products directly to customers
-- **Serve Customers**: Access fresh, locally-sourced agricultural products
-- **Build Community**: Create a sustainable marketplace that benefits all stakeholders
+## Run locally
 
-## 🚀 Features
+Use Node.js 22 or newer and npm.
 
-### For Farmers
-- ✅ Product listing and management
-- ✅ Direct customer communication
-- ✅ Sales tracking and analytics
-- ✅ Profile management and ratings
-- ✅ Multiple product categories support
-
-### For Customers
-- ✅ Browse fresh agricultural products
-- ✅ Discover local farmers
-- ✅ Direct farmer contact
-- ✅ Product reviews and ratings
-- ✅ Convenient shopping experience
-
-### General Features
-- 🎨 Modern, responsive UI with Tailwind CSS
-- 📱 Mobile-friendly design
-- 🔐 Secure user authentication
-- 💾 Database management with Prisma
-- 🔌 RESTful API endpoints
-- ⚡ Optimized performance with Next.js 13
-
-## 📋 Tech Stack
-
-- **Frontend**: React 18, Next.js 13, TypeScript
-- **Styling**: Tailwind CSS, Radix UI components
-- **Database**: Prisma ORM
-- **Forms**: React Hook Form with Zod validation
-- **UI Components**: shadcn/ui (Radix UI based)
-- **Icons**: Lucide React
-- **Charts**: Recharts
-- **Other**: Date-fns, class-variance-authority, Sonner (notifications)
-
-## 📦 Project Structure
-
-```
-EthioAgri/
-├── project/
-│   ├── app/                      # Next.js app directory
-│   │   ├── api/                  # API routes
-│   │   │   └── products/         # Product API endpoints
-│   │   ├── farmers/              # Farmers page
-│   │   ├── products/             # Products page
-│   │   ├── page.tsx              # Landing page
-│   │   ├── layout.tsx            # Root layout
-│   │   └── globals.css           # Global styles
-│   ├── components/               # Reusable React components
-│   ├── public/
-│   │   └── images/
-│   │       └── products/         # Product images
-│   ├── package.json              # Dependencies
-│   └── tsconfig.json             # TypeScript configuration
-└── README.md
+```sh
+cd project
+npm ci
+npm run dev
 ```
 
-## 🛠️ Installation
+Open http://localhost:3000. No database or environment variables are needed.
 
-### Prerequisites
-- Node.js 16+ 
-- npm or yarn
-- Git
+## Demo accounts
 
-### Steps
+| Role | Email | Password |
+| --- | --- | --- |
+| Farmer | farmer@ethioagri.demo | Demo123! |
+| Customer | customer@ethioagri.demo | Demo123! |
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/Ghostfaceki11err/EthioAgri.git
-   cd EthioAgri/project
-   ```
+Use the one-click demo buttons on the sign-in page, or enter the credentials manually. The farmer can also sign in with `+251900000001`; the customer with `+251900000002`.
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+- **Farmer:** open My Farm, add/edit/remove your listings, manage stock, and view sample orders and sales.
+- **Customer:** search and filter six sample products, view farmer profiles, add items to a basket, and place a demo order.
+- **Try the complete flow:** sign in as the farmer and add a product. Sign out, sign in as the customer, and order it. Switch back to the farmer to see the order and updated stock.
+- **Signup:** create additional local farmer or customer accounts using sample details and a demo-only password. Duplicate emails and phone numbers are rejected.
+- **Reset:** on the sign-in page, expand “Reset demo data” to restore the sample products and accounts.
 
-3. **Set up environment variables**
-   Create a `.env.local` file in the project directory:
-   ```env
-   # Database
-   DATABASE_URL="your_database_url"
-   
-   # Add other environment variables as needed
-   ```
+Sessions, accounts, listings, stock, and order history persist in browser storage. Each browser has its own demo data. The basket is temporary for the current visit. Clearing browser storage or resetting the demo removes local changes.
 
-4. **Set up the database**
-   ```bash
-   npx prisma migrate dev
-   ```
+## GitHub Pages
 
-5. **Run the development server**
-   ```bash
-   npm run dev
-   ```
+This is a static Next.js export. GitHub Pages cannot run a server or database, so account access and orders are browser-based demonstrations. They are not production authentication, payment processing, messaging, or delivery services. No money changes hands and no messages are sent. Use sample details only.
 
-   Open [http://localhost:3000](http://localhost:3000) to view the application.
+`.github/workflows/pages.yml` installs dependencies, checks lint and types, builds the static site, tests desktop and mobile demo flows, and deploys `project/out` on pushes to `main`. Pull requests run checks without deploying. GitHub Pages must be configured to use **GitHub Actions** in the repository’s Settings → Pages. Future pushes to `main` redeploy automatically.
 
-## 📖 Available Scripts
+The workflow derives the asset and navigation base path from the repository name. The current public URL is https://d3fau1t11.github.io/EthioAgri/.
 
-In the project directory, you can run:
+To preview the same build locally:
 
-- **`npm run dev`** - Start development server with hot reload
-- **`npm run build`** - Build for production
-- **`npm start`** - Start production server
-- **`npm run lint`** - Run ESLint to check code quality
+```sh
+cd project
+npm run build:pages
+npm run start:pages
+```
 
-## 🎨 Pages & Routes
+Open http://localhost:3000/EthioAgri/. For a site served at the root instead, run `npm run build` followed by `npm start`.
 
-| Page | Route | Purpose |
-|------|-------|---------|
-| Landing Page | `/` | Introduction and user type selection |
-| Products | `/products` | Browse all available products |
-| Farmers | `/farmers` | Discover local farmers |
-| API - Products | `/api/products` | GET products from database |
+## Verification
 
-## 📸 Adding Product Images
+```sh
+cd project
+npm run lint
+npm run typecheck
+npm run build:pages
+npx playwright install chromium
+npm run test:e2e
+```
 
-To add product images to the marketplace:
+The browser tests cover invalid passwords, demo phone login, session persistence, role restrictions, farmer listing edits and removal, customer ordering, stock limits, sales history, product images, filters, profiles, local registration, duplicates, reset, browser errors, and mobile overflow.
 
-1. **Place image files** in `public/images/products/`
-2. **Use descriptive names**:
-   - `organic-tomatoes.jpg`
-   - `teff.jpg`
-   - `sweet-peppers.jpg`
-   - `organic-carrots.jpg`
-   - `green-beans.jpg`
-   - `coffee.jpg`
+## Stack and routes
 
-3. **Supported formats**: JPG, PNG, WebP
-4. **Recommended size**: 400x300 pixels or similar aspect ratio
+Next.js 15, React 18, TypeScript, Tailwind CSS, and Radix UI. All sample images are local assets.
 
-5. **Update the code** in `app/products/page.tsx`:
-   ```tsx
-   { 
-     name: 'Your Product', 
-     farmer: 'Farmer Name', 
-     location: 'Location', 
-     price: '100 ETB/kg', 
-     image: '/images/products/your-image-name.jpg' 
-   }
-   ```
+| Route | Purpose |
+| --- | --- |
+| `/` | Landing page |
+| `/login/` | Sign-in and one-click demo accounts |
+| `/signup/` | Local demo registration |
+| `/products/` | Marketplace, basket, and customer order history |
+| `/farmers/` | Farmer directory and profiles |
+| `/dashboard/` | Farmer listings, inventory, orders, and sales |
 
-## 🗄️ Database Schema (Prisma)
-
-The application uses Prisma for database management. Key models include:
-
-- **Product**: Product listings with price, quantity, category, and farmer association
-- **Farmer**: Farmer profiles and information
-- **User**: User accounts and authentication
-
-Run `npx prisma studio` to view and manage your database visually.
-
-## 🔐 Authentication & Security
-
-- User registration and login functionality
-- Secure password handling
-- User role separation (Farmer vs Customer)
-- Protected routes and API endpoints
-
-## 🤝 Contributing
-
-Contributions are welcome! To contribute:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is open source. See LICENSE file for details.
-
-## 📞 Support & Contact
-
-For questions, suggestions, or support:
-- Open an issue on GitHub
-- Contact the maintainer: [Ghostfaceki11err](https://github.com/Ghostfaceki11err)
-
-## 🌱 Vision
-
-EthioAgri aims to:
-- Empower Ethiopian farmers with digital tools
-- Reduce the gap between producers and consumers
-- Promote sustainable and organic agriculture
-- Support local economies across Ethiopia
-- Build a thriving agricultural community
-
----
-
-**Made with ❤️ for Ethiopian Agriculture**
-
-Last updated: July 2025
+A real multi-user marketplace would require a separately hosted backend, database, server-enforced authentication, and payment/order integration.
